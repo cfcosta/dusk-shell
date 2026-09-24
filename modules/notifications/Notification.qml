@@ -18,7 +18,19 @@ StyledRect {
     required property NotifData modelData
     readonly property bool hasImage: modelData.image.length > 0
     readonly property bool hasAppIcon: modelData.appIcon.length > 0
-    readonly property int bodyTextFormat: /[<*_`#\[\]]/.test(modelData.body) ? Text.MarkdownText : Text.PlainText
+    // Notification bodies follow the freedesktop spec, whose markup is an HTML
+    // subset (<b> <i> <u> <a> <img> ...). Render those as RichText so links and
+    // styling show; keep genuine Markdown as Markdown; send everything else
+    // (incl. literal angle brackets like "<nick>" or "a < b", which Qt's text
+    // engine would otherwise treat as tags and drop) to PlainText so it stays visible.
+    readonly property int bodyTextFormat: {
+        const b = modelData.body;
+        if (/<\/?(?:b|i|u|s|a|em|strong|span|font|br|p|pre|code|tt|h[1-6]|ul|ol|li|blockquote|small|big|sub|sup|del|ins|mark|img)\b[^>]*>/i.test(b))
+            return Text.RichText;
+        if (/[*_`#\[\]]/.test(b))
+            return Text.MarkdownText;
+        return Text.PlainText;
+    }
     readonly property int nonAnimHeight: summary.implicitHeight + (root.expanded ? Tokens.spacing.extraSmall * 2 + appName.height + body.height + actions.height + actions.anchors.topMargin : bodyPreview.height) + inner.anchors.margins * 2
     property bool expanded: Config.notifs.openExpanded
 

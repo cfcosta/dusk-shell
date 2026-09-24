@@ -12,6 +12,9 @@ Text {
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
     color: Colours.palette.m3onSurface
+    // Default Qt link colour is an unreadable blue on dark surfaces; use the
+    // theme accent so links in notification bodies (and anywhere else) are legible.
+    linkColor: Colours.palette.m3primary
     font: Tokens.font.body.small
 
     Behavior on color {
