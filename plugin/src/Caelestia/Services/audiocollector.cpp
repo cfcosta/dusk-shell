@@ -78,7 +78,7 @@ PipeWireWorker::PipeWireWorker(std::stop_token token, AudioCollector* collector)
         self->processStream();
     };
 
-    m_stream = pw_stream_new_simple(pw_main_loop_get_loop(m_loop), "caelestia-shell", props, &events, this);
+    m_stream = pw_stream_new_simple(pw_main_loop_get_loop(m_loop), "dusk-shell", props, &events, this);
     if (!m_stream) {
         qCWarning(lcAcWorker) << "init: failed to create stream";
         pw_main_loop_destroy(m_loop);

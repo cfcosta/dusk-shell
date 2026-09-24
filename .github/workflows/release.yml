@@ -13,7 +13,7 @@ jobs:
       contents: write
 
     env:
-      RELEASE_NAME: caelestia-shell-${{ github.ref_name }}
+      RELEASE_NAME: dusk-shell-${{ github.ref_name }}
 
     steps:
       - name: Checkout source
@@ -25,14 +25,14 @@ jobs:
           rsync -av --exclude={'.*',nix,flake.lock,flake.nix} . ".release/$RELEASE_NAME"
           echo "$GITHUB_SHA" > ".release/$RELEASE_NAME/REVISION"
           tar -C .release -czf "$RELEASE_NAME.tar.gz" "$RELEASE_NAME"
-          cp "$RELEASE_NAME.tar.gz" caelestia-shell-latest.tar.gz
+          cp "$RELEASE_NAME.tar.gz" dusk-shell-latest.tar.gz
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v3
         with:
           files: |
             ${{ env.RELEASE_NAME }}.tar.gz
-            caelestia-shell-latest.tar.gz
+            dusk-shell-latest.tar.gz
           generate_release_notes: true
 
       - name: Update stable branch
