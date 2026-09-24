@@ -1,14 +1,15 @@
-<h1 align=center>caelestia-shell</h1>
+<h1 align=center>dusk-shell</h1>
 
-<div align=center>
-
-![GitHub last commit](https://img.shields.io/github/last-commit/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=9ccbfb)
-![GitHub Repo stars](https://img.shields.io/github/stars/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=b9c8da)
-![GitHub repo size](https://img.shields.io/github/repo-size/caelestia-dots/shell?style=for-the-badge&labelColor=101418&color=d3bfe6)
-[![Ko-Fi donate](https://img.shields.io/badge/donate-kofi?style=for-the-badge&logo=ko-fi&logoColor=ffffff&label=ko-fi&labelColor=101418&color=f16061&link=https%3A%2F%2Fko-fi.com%2Fsoramane)](https://ko-fi.com/soramane)
-[![Discord invite](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2FBGDCFCmMBk%3Fwith_counts%3Dtrue&query=approximate_member_count&style=for-the-badge&logo=discord&logoColor=ffffff&label=discord&labelColor=101418&color=96f1f1&link=https%3A%2F%2Fdiscord.gg%2FBGDCFCmMBk)][discord]
-
-</div>
+> [!WARNING]
+> dusk-shell is a personal fork of [caelestia-shell](https://github.com/caelestia-dots/shell), the
+> desktop shell from the [Caelestia dotfiles][dots-repo], by [@soramanew](https://github.com/soramanew)
+> and contributors. It carries fixes that upstream does not have yet, and renames the packaging (the
+> Nix packages, the `dusk-shell` binary and the `programs.dusk-shell` Home Manager module). Everything
+> else, including the QML modules, the `~/.config/caelestia` config files and the
+> [`caelestia` CLI](https://github.com/caelestia-dots/cli), is unchanged from upstream.
+>
+> Report problems with this fork [here](https://github.com/cfcosta/dusk-shell/issues), not upstream.
+> The credit for the shell goes to the Caelestia project. If you want the original, use upstream.
 
 https://github.com/user-attachments/assets/0840f496-575c-4ca6-83a8-87bb01a85c5f
 
@@ -26,22 +27,15 @@ https://github.com/user-attachments/assets/0840f496-575c-4ca6-83a8-87bb01a85c5f
 
 ### Arch Linux
 
-> [!WARNING]
-> If you want to make your own changes/tweaks to the shell, do NOT edit the files installed by the AUR
-> package. Instead, follow the instructions in the [manual installation section](#manual-installation).
-
-The shell is available from the AUR as `caelestia-shell`. You can install it with an AUR helper (recommended),
-like [`paru`](https://github.com/morganamilo/paru), or by manually downloading the PKGBUILD and running `makepkg -si`.
-
-A package following the latest commit also exists as `caelestia-shell-git`. This is bleeding-edge
-and likely to be unstable/have bugs. Regular users are recommended to use the stable package (`caelestia-shell`).
+The AUR packages (`caelestia-shell`, `caelestia-shell-git`) install upstream caelestia-shell, not this
+fork. To use dusk-shell on Arch, follow the [manual installation section](#manual-installation).
 
 ### Nix
 
 You can run the shell directly via `nix run`:
 
 ```sh
-nix run github:caelestia-dots/shell#with-cli
+nix run github:cfcosta/dusk-shell#with-cli
 ```
 
 Or add it to your system configuration:
@@ -51,20 +45,20 @@ Or add it to your system configuration:
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    caelestia-shell = {
-      url = "github:caelestia-dots/shell";
+    dusk-shell = {
+      url = "github:cfcosta/dusk-shell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 }
 ```
 
-For full functionality, use `caelestia-shell.packages.<system>.with-cli`, which can be added to your
+For full functionality, use `dusk-shell.packages.<system>.with-cli`, which can be added to your
 `environment.systemPackages`, `users.users.<username>.packages`, `home.packages` if using home-manager,
 or a devshell. The `default` package does not include the CLI.
-You can then run the shell with `caelestia-shell`.
+You can then run the shell with `dusk-shell`.
 
-For home-manager, you can also use Caelestia's Home Manager module (explained in [the configuration section](#home-manager-module)), which installs and configures the shell and CLI.
+For home-manager, you can also use the Home Manager module (explained in [the configuration section](#home-manager-module)), which installs and configures the shell and CLI.
 
 ### Manual installation
 
@@ -109,7 +103,7 @@ Then build and install using CMake.
 
 ```sh
 cd $XDG_CONFIG_HOME/quickshell
-git clone https://github.com/caelestia-dots/shell.git caelestia
+git clone https://github.com/cfcosta/dusk-shell.git caelestia
 
 cd caelestia
 cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/
@@ -875,7 +869,7 @@ For NixOS users, a Home Manager module is also available.
 <details><summary><code>home.nix</code></summary>
 
 ```nix
-programs.caelestia = {
+programs.dusk-shell = {
   enable = true;
   systemd = {
     enable = false; # if you prefer starting from your compositor
@@ -908,7 +902,7 @@ The module automatically adds the shell to the path with **full functionality**.
 
 ### Need help or support?
 
-You can join the Caelestia Discord server for assistance and discussion [here][discord].
+Open an issue on the [dusk-shell issue tracker](https://github.com/cfcosta/dusk-shell/issues).
 
 ### I want to make my own changes to the Hyprland config!
 
@@ -921,7 +915,7 @@ See the [manual installation](#manual-installation) section for the correspondin
 ### I want to disable ___ feature!
 
 Please read the [configuring](#configuring) section.
-If there is no corresponding option, make a [feature request](https://github.com/caelestia-dots/shell/issues/new?template=feature.yml).
+If there is no corresponding option, open an [issue](https://github.com/cfcosta/dusk-shell/issues/new).
 
 ### How do I make my colour scheme change to match my wallpaper?
 
@@ -954,15 +948,4 @@ Finally, another thank you to all the configs I took inspiration from (only one 
 
 -   [Axenide/Ax-Shell](https://github.com/Axenide/Ax-Shell)
 
-## Stonks 📈
-
-<a href="https://www.star-history.com/#caelestia-dots/shell&Date">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=caelestia-dots/shell&type=Date" />
- </picture>
-</a>
-
 [dots-repo]: https://github.com/caelestia-dots/caelestia
-[discord]: https://caelestiashell.com/discord

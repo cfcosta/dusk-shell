@@ -70,7 +70,7 @@
 
   extras = stdenv.mkDerivation {
     inherit cmakeBuildType;
-    name = "caelestia-extras${lib.optionalString debug "-debug"}";
+    name = "dusk-shell-extras${lib.optionalString debug "-debug"}";
     src = lib.fileset.toSource {
       root = ./..;
       fileset = lib.fileset.union ./../CMakeLists.txt ./../extras;
@@ -88,7 +88,7 @@
 
   plugin = stdenv.mkDerivation {
     inherit cmakeBuildType;
-    name = "caelestia-qml-plugin${lib.optionalString debug "-debug"}";
+    name = "dusk-shell-qml-plugin${lib.optionalString debug "-debug"}";
     src = lib.fileset.toSource {
       root = ./..;
       fileset = lib.fileset.union ./../CMakeLists.txt ./../plugin;
@@ -108,7 +108,7 @@
 in
   stdenv.mkDerivation {
     inherit version cmakeBuildType;
-    pname = "caelestia-shell${lib.optionalString debug "-debug"}";
+    pname = "dusk-shell${lib.optionalString debug "-debug"}";
     src = ./..;
 
     nativeBuildInputs = [cmake ninja makeWrapper qt6.wrapQtAppsHook];
@@ -118,7 +118,7 @@ in
     cmakeFlags =
       [
         (lib.cmakeFeature "ENABLE_MODULES" "shell")
-        (lib.cmakeFeature "INSTALL_QSCONFDIR" "${placeholder "out"}/share/caelestia-shell")
+        (lib.cmakeFeature "INSTALL_QSCONFDIR" "${placeholder "out"}/share/dusk-shell")
       ]
       ++ cmakeVersionFlags;
 
@@ -132,12 +132,16 @@ in
     '';
 
     postInstall = ''
-      makeWrapper ${qs}/bin/qs $out/bin/caelestia-shell \
+      makeWrapper ${qs}/bin/qs $out/bin/dusk-shell \
       	--prefix PATH : "${lib.makeBinPath runtimeDeps}" \
       	--set FONTCONFIG_FILE "${fontconfig}" \
       	--set CAELESTIA_LIB_DIR ${extras}/lib \
         --set CAELESTIA_XKB_RULES_PATH ${xkeyboard-config}/share/xkeyboard-config-2/rules/base.lst \
-      	--add-flags "-p $out/share/caelestia-shell"
+      	--add-flags "-p $out/share/dusk-shell"
+
+      # caelestia-cli's Nix package drives the shell through a `caelestia-shell`
+      # binary on PATH (`caelestia shell ...`), so keep that name working.
+      ln -s dusk-shell $out/bin/caelestia-shell
 
       mkdir -p $out/lib
       ln -s ${extras}/lib/* $out/lib/
@@ -149,8 +153,8 @@ in
 
     meta = {
       description = "A fluid, morphing shell for your Linux desktop";
-      homepage = "https://github.com/caelestia-dots/shell";
+      homepage = "https://github.com/cfcosta/dusk-shell";
       license = lib.licenses.gpl3Only;
-      mainProgram = "caelestia-shell";
+      mainProgram = "dusk-shell";
     };
   }

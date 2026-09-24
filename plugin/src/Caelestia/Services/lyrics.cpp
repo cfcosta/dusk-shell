@@ -39,7 +39,7 @@ constexpr qreal k_indexFudge = 0.1;
 
 [[nodiscard]] const QHash<QByteArray, QByteArray>& lrclibHeaders() {
     static const QHash<QByteArray, QByteArray> k_h = {
-        { "User-Agent"_ba, "caelestia-shell (https://github.com/caelestia-dots/shell)"_ba },
+        { "User-Agent"_ba, "dusk-shell (https://github.com/cfcosta/dusk-shell)"_ba },
     };
     return k_h;
 }

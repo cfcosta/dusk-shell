@@ -26,7 +26,7 @@ endif()
 
 string(REGEX REPLACE "^v" "" VERSION "${VERSION}")
 
-project(caelestia-shell VERSION ${VERSION} LANGUAGES CXX)
+project(dusk-shell VERSION ${VERSION} LANGUAGES CXX)
 
 include(GNUInstallDirs)
 

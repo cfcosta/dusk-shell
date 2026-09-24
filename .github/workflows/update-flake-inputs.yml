@@ -30,9 +30,9 @@ jobs:
           nix profile install 'nixpkgs#sway'
           sway &
           sleep 3  # Give Sway some time to start
-          result/bin/caelestia-shell -d
+          result/bin/dusk-shell -d
           sleep 3  # Give the shell some time to start (and die)
           pgrep .quickshell-wra  # Fail job if shell died
 
-          result/bin/caelestia-shell kill
+          result/bin/dusk-shell kill
           killall sway  # Screw using IPC

@@ -1,5 +1,5 @@
 {
-  description = "Desktop shell for Caelestia dots";
+  description = "dusk-shell: a desktop shell for Hyprland, forked from caelestia-shell";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -42,7 +42,7 @@
     packages = eachSystem (system: let
       pkgs = pkgsOf.${system};
     in rec {
-      caelestia-shell = pkgs.callPackage ./nix {
+      dusk-shell = pkgs.callPackage ./nix {
         rev = self.rev or self.dirtyRev;
         stdenv = pkgs.clangStdenv;
         quickshell = inputs.quickshell.packages.${system}.default.override {
@@ -53,15 +53,15 @@
         m3shapes = inputs.m3shapes.packages.${system}.default;
         hyprland = inputs.hyprland.packages.${system}.hyprland;
       };
-      with-cli = caelestia-shell.override {withCli = true;};
-      debug = caelestia-shell.override {debug = true;};
-      default = caelestia-shell;
+      with-cli = dusk-shell.override {withCli = true;};
+      debug = dusk-shell.override {debug = true;};
+      default = dusk-shell;
     });
 
     devShells = eachSystem (system: {
       default = let
         pkgs = pkgsOf.${system};
-        shell = self.packages.${system}.caelestia-shell;
+        shell = self.packages.${system}.dusk-shell;
         mkShell = pkgs.mkShell.override {stdenv = shell.stdenv;};
       in
         mkShell {
