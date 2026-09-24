@@ -135,7 +135,16 @@ StyledRect {
             id: bodyText
 
             Layout.fillWidth: true
-            textFormat: Text.MarkdownText
+            // Match the popup logic: HTML markup -> RichText, real Markdown ->
+            // MarkdownText, otherwise PlainText so stray "<...>" stays visible.
+            textFormat: {
+                const b = String(root.modelData?.body ?? "");
+                if (/<\/?(?:b|i|u|s|a|em|strong|span|font|br|p|pre|code|tt|h[1-6]|ul|ol|li|blockquote|small|big|sub|sup|del|ins|mark|img)\b[^>]*>/i.test(b))
+                    return Text.RichText;
+                if (/[*_`#\[\]]/.test(b))
+                    return Text.MarkdownText;
+                return Text.PlainText;
+            }
             text: String(root.modelData?.body ?? "").replace(/(.)\n(?!\n)/g, "$1\n\n") || Tr.tr("No body here! :/")
             color: root.modelData?.urgency === "critical" ? Colours.palette.m3secondary : Colours.palette.m3outline
             wrapMode: Text.WordWrap

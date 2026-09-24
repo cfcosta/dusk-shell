@@ -311,7 +311,8 @@ StyledRect {
         required property NotifData modelData
 
         Layout.fillWidth: true
-        textFormat: Text.MarkdownText
+        // This line builds its own HTML (<span style=...>), so render as RichText.
+        textFormat: Text.RichText
         text: {
             const summary = modelData.summary.replace(/\n/g, " ");
             const body = modelData.body.replace(/\n/g, " ");
