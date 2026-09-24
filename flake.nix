@@ -15,6 +15,11 @@
       inputs.caelestia-shell.follows = "";
     };
 
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     m3shapes = {
       url = "github:soramanew/m3shapes/32ad9ce328bb77ed349b40a3be10ee9ea610b8ab";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -46,6 +51,7 @@
         };
         caelestia-cli = inputs.caelestia-cli.packages.${system}.default;
         m3shapes = inputs.m3shapes.packages.${system}.default;
+        hyprland = inputs.hyprland.packages.${system}.hyprland;
       };
       with-cli = caelestia-shell.override {withCli = true;};
       debug = caelestia-shell.override {debug = true;};
